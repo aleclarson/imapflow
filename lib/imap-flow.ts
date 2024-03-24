@@ -63,6 +63,7 @@ import {
   DownloadObject,
   Options,
   MailboxLockObject,
+  FlagColor,
 } from './types'
 
 const CONNECT_TIMEOUT = 90 * 1000
@@ -1582,7 +1583,6 @@ export class ImapFlow {
   /**
    * Initiates a connection against IMAP server. Throws if anything goes wrong. This is something you have to call before you can run any IMAP commands
    *
-   * @returns {Promise<void>}
    * @throws Will throw an error if connection or authentication fails
    * @example
    * let client = new ImapFlow({...});
@@ -1831,7 +1831,7 @@ export class ImapFlow {
    * Returns current quota
    *
    * @param [path] Optional mailbox path if you want to check quota for specific folder
-   * @returns Quota information or `false` if QUTOA extension is not supported or requested path does not exist
+   * @returns Quota information or `false` if QUOTA extension is not supported or requested path does not exist
    *
    * @example
    * let quota = await client.getQuota();
@@ -1846,7 +1846,6 @@ export class ImapFlow {
    * Lists available mailboxes as an Array
    *
    * @param [options] defines additional listing options
-   * @returns An array of ListResponse objects
    *
    * @example
    * let list = await client.list();
@@ -1861,8 +1860,6 @@ export class ImapFlow {
   /**
    * Lists available mailboxes as a tree structured object
    *
-   * @returns Tree structured object
-   *
    * @example
    * let tree = await client.listTree();
    * tree.folders.forEach(mailbox=>console.log(mailbox.path));
@@ -1875,7 +1872,6 @@ export class ImapFlow {
 
   /**
    * Performs a no-op call against server
-   * @returns {Promise<void>}
    */
   async noop(): Promise<void> {
     await this.run('NOOP')
@@ -1885,7 +1881,6 @@ export class ImapFlow {
    * Creates a new mailbox folder and sets up subscription for the created mailbox. Throws on error.
    *
    * @param path Full mailbox path. Unicode is allowed. If value is an array then it is joined using current delimiter symbols. Namespace prefix is added automatically if required.
-   * @returns Mailbox info
    * @throws Will throw an error if mailbox can not be created
    *
    * @example
@@ -1902,7 +1897,6 @@ export class ImapFlow {
    *
    * @param path  Path for the mailbox to rename. Unicode is allowed. If value is an array then it is joined using current delimiter symbols. Namespace prefix is added automatically if required.
    * @param newPath New path for the mailbox
-   * @returns Mailbox info
    * @throws Will throw an error if mailbox does not exist or can not be renamed
    *
    * @example
@@ -1921,7 +1915,6 @@ export class ImapFlow {
    * Deletes a mailbox. Throws on error.
    *
    * @param path Path for the mailbox to delete. Unicode is allowed. If value is an array then it is joined using current delimiter symbols. Namespace prefix is added automatically if required.
-   * @returns Mailbox info
    * @throws Will throw an error if mailbox does not exist or can not be deleted
    *
    * @example
@@ -1937,7 +1930,7 @@ export class ImapFlow {
    * Subscribes to a mailbox
    *
    * @param path Path for the mailbox to subscribe to. Unicode is allowed. If value is an array then it is joined using current delimiter symbols. Namespace prefix is added automatically if required.
-   * @returns `true` if subscription operation succeeded, `false` otherwise
+   * @returns Did the operation succeed or not
    *
    * @example
    * await client.mailboxSubscribe('Important stuff ❗️');
@@ -1950,7 +1943,7 @@ export class ImapFlow {
    * Unsubscribes from a mailbox
    *
    * @param path Path for the mailbox to unsubscribe from. Unicode is allowed. If value is an array then it is joined using current delimiter symbols. Namespace prefix is added automatically if required.
-   * @returns `true` if unsubscription operation succeeded, `false` otherwise
+   * @returns Did the operation succeed or not
    *
    * @example
    * await client.mailboxUnsubscribe('Important stuff ❗️');
@@ -2009,11 +2002,15 @@ export class ImapFlow {
   }
 
   /**
-   * Starts listening for new or deleted messages from the currently opened mailbox. This method is only required if {@link ImapFlow.Options.disableAutoIdle} is set to `true`.
+   * Starts listening for new or deleted messages from the currently opened
+   * mailbox. This method is only required if
+   * {@link ImapFlow.Options.disableAutoIdle} is set to `true`.
    *
    * Otherwise, `IDLE` is started by default on connection inactivity.
    *
-   * Note: If `idle()` is called manually, it will not return until `IDLE` is finished, which means you would have to call some other command out of scope.
+   * Note: If `idle()` is called manually, it will not return until `IDLE` is
+   * finished, which means you would have to call some other command out of
+   * scope.
    *
    * @returns Did the operation succeed or not
    *
@@ -2122,21 +2119,23 @@ export class ImapFlow {
   }
 
   /**
-   * Sets a colored flag for an email. Only supported by mail clients like Apple Mail
+   * Sets a colored flag for an email.
+   *
+   * Only supported by mail clients like Apple Mail.
    *
    * @param range Range to filter the messages
-   * @param color The color to set. One of 'red', 'orange', 'yellow', 'green', 'blue', 'purple', and 'grey'
+   * @param color The color to set
    * @param [options]
    * @returns Did the operation succeed or not
    *
    * @example
    * let mailbox = await client.mailboxOpen('INBOX');
    * // add a purple flag for all emails
-   * await client.setFlagColor('1:*', 'Purple');
+   * await client.setFlagColor('1:*', 'purple');
    */
   async setFlagColor(
     range: SequenceString | number[] | SearchObject,
-    color: string,
+    color: FlagColor,
     options: Omit<MessageFlagsOptions, 'useLabels'> = {}
   ): Promise<boolean> {
     range = await this.resolveRange(range, options)
@@ -2183,8 +2182,9 @@ export class ImapFlow {
   }
 
   /**
-   * Delete messages from currently opened mailbox. Method does not indicate info about deleted messages,
-   * instead you should be using {@link ImapFlow#expunge} event for this
+   * Delete messages from currently opened mailbox. Method does not indicate
+   * info about deleted messages, instead you should be using "expunge" event
+   * for this.
    *
    * @param range Range to filter the messages
    * @param [options]
@@ -2949,15 +2949,15 @@ export class ImapFlow {
   }
 
   /**
-   * Opens a mailbox if not already open and returns a lock. Next call to `getMailboxLock()` is queued
-   * until previous lock is released. This is suggested over {@link ImapFlow.mailboxOpen()} as
-   * `getMailboxLock()` gives you a weak transaction while `mailboxOpen()` has no guarantees whatsoever that another
-   * mailbox is opened while you try to call multiple fetch or store commands.
+   * Opens a mailbox if not already open and returns a lock. Next call to
+   * `getMailboxLock()` is queued until previous lock is released. This is
+   * suggested over {@link ImapFlow.mailboxOpen()} as `getMailboxLock()` gives
+   * you a weak transaction while `mailboxOpen()` has no guarantees whatsoever
+   * that another mailbox is opened while you try to call multiple fetch or
+   * store commands.
    *
    * @param path Path for the mailbox to open
-   * @param [options] optional options
-   * @param [options.readOnly=false] If `true` then opens mailbox in read-only mode. You can still try to perform write operations but these would probably fail.
-   * @returns Mailbox lock
+   * @param [options]
    * @throws Will throw an error if mailbox does not exist or can not be opened
    *
    * @example
@@ -2971,7 +2971,7 @@ export class ImapFlow {
    */
   async getMailboxLock(
     path: string | string[],
-    options: { readOnly?: boolean; description?: string } = {}
+    options:  = {}
   ): Promise<MailboxLockObject> {
     path = normalizePath(this, path)
 
@@ -3005,14 +3005,17 @@ export interface ImapFlow
 
 interface ImapFlowEvents {
   /**
-   * Connection close event. **NB!** ImapFlow does not handle reconncts automatically.
+   * Connection close event. **NB!** ImapFlow does not handle reconncts
+   * automatically.
    *
-   * So whenever a 'close' event occurs you must create a new connection yourself.
+   * So whenever a 'close' event occurs you must create a new connection
+   * yourself.
    */
   close: void
 
   /**
-   * Error event. In most cases getting an error event also means that connection is closed and pending operations should return with a failure.
+   * Error event. In most cases getting an error event also means that
+   * connection is closed and pending operations should return with a failure.
    *
    * @example
    * client.on('error', err => {
@@ -3041,7 +3044,8 @@ interface ImapFlowEvents {
   }
 
   /**
-   * Deleted message sequence number in currently opened mailbox. One event is fired for every deleted email.
+   * Deleted message sequence number in currently opened mailbox. One event is
+   * fired for every deleted email.
    *
    * @example
    * client.on('expunge', data => {

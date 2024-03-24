@@ -214,6 +214,13 @@ export type MailboxObject = {
   readOnly?: boolean
 }
 
+export type MailboxLockOptions = {
+  /** If `true` then opens mailbox in read-only mode. You can still try to perform write operations but these would probably fail. */
+  readOnly?: boolean
+
+  description?: string
+}
+
 /**
  * Represents a lock on a mailbox.
  *
@@ -806,6 +813,8 @@ export type MessageFlagsOptions = MessageOptions & {
   useLabels?: boolean
 }
 
+export type FlagColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple' | 'grey' // prettier-ignore
+
 /**
  * Fetched message data.
  */
@@ -837,8 +846,8 @@ export type FetchMessageObject = {
   /** Set of message flags */
   flags?: Set<string>
 
-  /** Flag color based on flags (e.g., "red", "yellow"). This value is derived from the `flags` Set and it uses the same color rules as Apple Mail */
-  flagColor?: string
+  /** Flag color based on flags. This value is derived from the `flags` Set and it uses the same color rules as Apple Mail */
+  flagColor?: FlagColor
 
   /** Message envelope */
   envelope?: MessageEnvelopeObject
