@@ -11,7 +11,7 @@ export const CLOSE = async connection => {
     response.next()
 
     let currentMailbox = connection.mailbox
-    connection.mailbox = false
+    connection.mailbox = null
     connection.currentSelectCommand = false
     connection.state = connection.states.AUTHENTICATED
 

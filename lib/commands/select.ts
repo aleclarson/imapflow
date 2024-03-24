@@ -229,7 +229,7 @@ export const SELECT = async (connection, path, options) => {
     }
 
     let currentMailbox = connection.mailbox
-    connection.mailbox = false
+    connection.mailbox = null
 
     if (currentMailbox && currentMailbox.path !== path) {
       connection.emit('mailboxClose', currentMailbox)
@@ -257,7 +257,7 @@ export const SELECT = async (connection, path, options) => {
 
       let currentMailbox = connection.mailbox
 
-      connection.mailbox = false
+      connection.mailbox = null
       connection.currentSelectCommand = false
       connection.state = connection.states.AUTHENTICATED
 

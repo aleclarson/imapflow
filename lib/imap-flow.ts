@@ -118,9 +118,9 @@ export class ImapFlow {
    */
   idling: boolean = false
   /**
-   * Currently selected mailbox or `false` if mailbox is not open
+   * Currently selected mailbox or `null` if mailbox is not open
    */
-  mailbox: MailboxObject | false = false
+  mailbox: MailboxObject | null = null
   /**
    * Is the connection currently encrypted or not
    */
