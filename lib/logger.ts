@@ -1,5 +1,5 @@
-import Pino from 'pino';
+import Pino from 'pino'
 
-const logger = Pino();
-logger.level = 'trace';
-export = logger;
+const logger = Pino()
+logger.level = 'trace'
+export = logger

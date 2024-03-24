@@ -1,57 +1,59 @@
 {
-    "name": "imapflow",
-    "version": "1.0.158",
-    "description": "IMAP Client for Node",
-    "main": "./build/index.js",
-    "types": "./build/index.d.ts",
-    "scripts": {
-        "test": "grunt",
-        "prepublishOnly": "npm run build",
-        "build": "rimraf build && concurrently -n tsup,tsc 'tsup-node' 'tsc -p lib --emitDeclarationOnly --declaration'",
-        "dev": "rimraf build && concurrently -n tsup,tsc 'tsup-node --watch --sourcemap' 'tsc -p lib --emitDeclarationOnly --declaration --declarationMap --watch --preserveWatchOutput'"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/postalsys/imapflow.git"
-    },
-    "files": [
-        "build"
-    ],
-    "keywords": [
-        "imap",
-        "email",
-        "mail"
-    ],
-    "author": "Postal Systems OÜ",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/postalsys/imapflow/issues"
-    },
-    "homepage": "https://imapflow.com/",
-    "devDependencies": {
-        "@alloc/fast-rimraf": "^1.0.8",
-        "@babel/eslint-parser": "7.23.10",
-        "@babel/eslint-plugin": "7.23.5",
-        "@types/libmime": "^5.0.3",
-        "@types/libqp": "^1.1.3",
-        "@types/node": "20.11.29",
-        "concurrently": "^8.2.2",
-        "eslint": "8.57.0",
-        "eslint-config-nodemailer": "1.2.0",
-        "eslint-config-prettier": "9.1.0",
-        "imapflow-jsdoc-template": "3.4.0-imapflow.1",
-        "tsup": "^8.0.2"
-    },
-    "dependencies": {
-        "encoding-japanese": "2.0.0",
-        "iconv-lite": "0.6.3",
-        "libbase64": "1.3.0",
-        "libmime": "5.3.4",
-        "libqp": "2.1.0",
-        "mailsplit": "5.4.0",
-        "nodemailer": "6.9.12",
-        "pino": "8.19.0",
-        "socks": "2.8.1",
-        "strict-event-emitter-types": "^2.0.0"
-    }
+  "name": "imapflow",
+  "version": "1.0.158",
+  "description": "IMAP Client for Node",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "scripts": {
+    "test": "grunt",
+    "prepublishOnly": "npm run build",
+    "build": "rimraf build && concurrently -n tsup,tsc 'tsup-node' 'tsc -p lib --emitDeclarationOnly --declaration'",
+    "dev": "rimraf build && concurrently -n tsup,tsc 'tsup-node --watch --sourcemap' 'tsc -p lib --emitDeclarationOnly --declaration --declarationMap --watch --preserveWatchOutput'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/postalsys/imapflow.git"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [
+    "imap",
+    "email",
+    "mail"
+  ],
+  "author": "Postal Systems OÜ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/postalsys/imapflow/issues"
+  },
+  "homepage": "https://imapflow.com/",
+  "prettier": "@alloc/prettier-config",
+  "devDependencies": {
+    "@alloc/fast-rimraf": "^1.0.8",
+    "@alloc/prettier-config": "^1.0.0",
+    "@babel/eslint-parser": "7.23.10",
+    "@babel/eslint-plugin": "7.23.5",
+    "@types/libmime": "^5.0.3",
+    "@types/libqp": "^1.1.3",
+    "@types/node": "20.11.29",
+    "concurrently": "^8.2.2",
+    "eslint": "8.57.0",
+    "eslint-config-nodemailer": "1.2.0",
+    "eslint-config-prettier": "9.1.0",
+    "imapflow-jsdoc-template": "3.4.0-imapflow.1",
+    "tsup": "^8.0.2"
+  },
+  "dependencies": {
+    "encoding-japanese": "2.0.0",
+    "iconv-lite": "0.6.3",
+    "libbase64": "1.3.0",
+    "libmime": "5.3.4",
+    "libqp": "2.1.0",
+    "mailsplit": "5.4.0",
+    "nodemailer": "6.9.12",
+    "pino": "8.19.0",
+    "socks": "2.8.1",
+    "strict-event-emitter-types": "^2.0.0"
+  }
 }
