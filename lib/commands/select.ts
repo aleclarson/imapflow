@@ -35,7 +35,7 @@ export const SELECT = async (connection, path, options) => {
 
   let response
   try {
-    let map = { path }
+    let map: any = { path }
     if (folderListData) {
       ;['delimiter', 'specialUse', 'subscribed', 'listed'].forEach(key => {
         if (folderListData[key]) {
@@ -44,7 +44,7 @@ export const SELECT = async (connection, path, options) => {
       })
     }
 
-    let extraArgs = []
+    let extraArgs: any[] = []
     if (
       connection.enabled.has('QRESYNC') &&
       options.changedSince &&

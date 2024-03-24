@@ -84,14 +84,7 @@ export interface Options {
    * console using pino format. Can be disabled by setting to `false`.
    * @default false
    */
-  logger?:
-    | {
-        debug(obj: any): void
-        info(obj: any): void
-        warn(obj: any): void
-        error(obj: any): void
-      }
-    | false
+  logger?: Logger | false
   /**
    * If true then log data read from and written to socket encoded in
    * base64.
@@ -916,4 +909,36 @@ export type DownloadObject = {
 
   /** Streamed content */
   content: NodeJS.ReadableStream
+}
+
+export type Logger = {
+  trace?(entry: LogEntry): void
+  debug?(entry: LogEntry): void
+  info?(entry: LogEntry): void
+  warn?(entry: LogEntry): void
+  error?(entry: LogEntry): void
+  fatal?(entry: LogEntry): void
+}
+
+export type LogEntry = Record<string, unknown> & {
+  /** The client id */
+  cid: string
+
+  /** The log level */
+  level: 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
+
+  /** The log ordering number */
+  lo: number
+
+  /** The log timestamp */
+  ts: number
+
+  msg?: string
+  err?: unknown
+  src?: string
+  data?: unknown
+  compress?: boolean
+  secure?: boolean
+  throttleDelay?: number
+  delayResponse?: number
 }

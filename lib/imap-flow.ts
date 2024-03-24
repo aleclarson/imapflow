@@ -64,6 +64,8 @@ import {
   Options,
   MailboxLockObject,
   FlagColor,
+  LogEntry,
+  MailboxLockOptions,
 } from './types'
 
 const CONNECT_TIMEOUT = 90 * 1000
@@ -2971,7 +2973,7 @@ export class ImapFlow {
    */
   async getMailboxLock(
     path: string | string[],
-    options:  = {}
+    options: MailboxLockOptions = {}
   ): Promise<MailboxLockObject> {
     path = normalizePath(this, path)
 
@@ -3113,28 +3115,7 @@ interface ImapFlowEvents {
    *     console.log(`${log.cid} ${log.msg}`);
    * });
    */
-  log: Record<string, unknown> & {
-    /** The client id */
-    cid: string
-
-    /** The log level */
-    level: 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
-
-    /** The log ordering number */
-    lo: number
-
-    /** The log timestamp */
-    ts: number
-
-    msg?: string
-    err?: unknown
-    src?: string
-    data?: unknown
-    compress?: boolean
-    secure?: boolean
-    throttleDelay?: number
-    delayResponse?: number
-  }
+  log: LogEntry
 
   /** @internal */
   response: any
