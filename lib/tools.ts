@@ -645,7 +645,7 @@ export function parseBodyStructure(entry) {
       // body parameter parenthesized list
       if (i < node.length - 1) {
         if (node[i]) {
-          curNode.parameters = this.getStructuredParams(node[i])
+          curNode.parameters = getStructuredParams(node[i])
         }
         i++
       }
@@ -658,7 +658,7 @@ export function parseBodyStructure(entry) {
 
       // body parameter parenthesized list
       if (node[i]) {
-        curNode.parameters = this.getStructuredParams(node[i])
+        curNode.parameters = getStructuredParams(node[i])
       }
       i++
 
@@ -743,7 +743,7 @@ export function parseBodyStructure(entry) {
           .toString()
           .toLowerCase()
         if (Array.isArray(node[i][1])) {
-          curNode.dispositionParameters = this.getStructuredParams(node[i][1])
+          curNode.dispositionParameters = getStructuredParams(node[i][1])
         }
       }
       i++

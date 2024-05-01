@@ -32,20 +32,7 @@ export interface Options {
    * Authentication options. Authentication is requested automatically
    * during `connect()`.
    */
-  auth?: {
-    /**
-     * Username.
-     */
-    user: string
-    /**
-     * Password, if using regular authentication.
-     */
-    pass?: string
-    /**
-     * OAuth2 Access Token, if using OAuth2 authentication.
-     */
-    accessToken?: string
-  }
+  auth?: AuthOptions
   /**
    * Client identification info.
    */
@@ -159,6 +146,24 @@ export interface Options {
    * Handler for untagged EXPUNGE responses.
    */
   expungeHandler?: (payload: any) => void
+}
+
+/**
+ * Options for authenticating with the IMAP server.
+ */
+export interface AuthOptions {
+  /**
+   * Username.
+   */
+  user: string
+  /**
+   * Password, if using regular authentication.
+   */
+  pass?: string
+  /**
+   * OAuth2 Access Token, if using OAuth2 authentication.
+   */
+  accessToken?: string
 }
 
 /**
